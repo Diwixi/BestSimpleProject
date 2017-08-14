@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style message="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item message="colorPrimary">@color/colorPrimary</item>
+        <item message="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item message="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style message="AppTheme.NoActionBar">
+        <item message="windowActionBar">false</item>
+        <item message="windowNoTitle">true</item>
+    </style>
+
+    <style message="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style message="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>
