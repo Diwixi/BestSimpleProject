@@ -37,7 +37,10 @@
             android:label="ListItemActivity">
         </activity>
         <activity android:name=".picturesProject.PicturesActivity" />
-        <activity android:name=".picturesProject.PictureViewerActivity"/>
+        <activity
+            android:name=".picturesProject.PictureViewerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".picturesProject.ShowPhotoActivity"/>
     </application>
 
 </manifest>

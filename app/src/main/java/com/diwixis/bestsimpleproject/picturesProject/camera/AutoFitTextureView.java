@@ -1,13 +1,12 @@
-package com.diwixis.bestsimpleproject.picturesProject;
+package com.diwixis.bestsimpleproject.picturesProject.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;
 
 /**
- * Created by Diwixis on 29.08.2017.
+ * A {@link TextureView} that can be adjusted to a specified aspect ratio.
  */
-
 public class AutoFitTextureView extends TextureView {
 
     private int mRatioWidth = 0;

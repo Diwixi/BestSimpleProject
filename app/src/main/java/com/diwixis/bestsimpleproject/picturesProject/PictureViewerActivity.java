@@ -3,17 +3,20 @@ package com.diwixis.bestsimpleproject.picturesProject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ImageFormat;
-import android.hardware.camera2.CameraAccessException;
+import android.content.res.Configuration;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.TextureView;
-import android.widget.Button;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.diwixis.bestsimpleproject.R;
-import com.diwixis.bestsimpleproject.picturesProject.camera.CameraHelper;
+import com.diwixis.bestsimpleproject.picturesProject.camera.*;
+import com.diwixis.bestsimpleproject.picturesProject.camera.AutoFitTextureView;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,9 +27,9 @@ import butterknife.ButterKnife;
 
 public class PictureViewerActivity extends MvpAppCompatActivity {
 
-    private CameraManager mCameraManager = null;
-    private TextureView mImageView = null;
+    private static final String TAG = PictureViewerActivity.class.getName();
 
+    private CameraController mRxCameraController21;
 
     public static void startActivity(Activity activity){
         Intent intent = new Intent(activity, PictureViewerActivity.class);
@@ -34,42 +37,110 @@ public class PictureViewerActivity extends MvpAppCompatActivity {
         activity.startActivity(intent);
     }
 
-    private final int CAMERA1   = 0;
-    private final int CAMERA2   = 1;
-    private CameraHelper[] myCameras = null;
-    private Button mButtonOpenCamera = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pictures_viewer_activity);
 //        ButterKnife.bind(this);
-        mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        mImageView = (TextureView) findViewById(R.id.textureView);
-        try{
-            // Получение списка камер с устройства
-            String[] cameraList = mCameraManager.getCameraIdList();
-            //создаем место для наших камер
-            myCameras = new CameraHelper[cameraList.length];
 
-            // создаем обработчики для нашых камер и выводим информацию по камере
-            for (String cameraID : cameraList) {
-                Log.i("TAG", "cameraID: "+cameraID);
-                int id = Integer.parseInt(cameraID);
-
-                // создаем обработчик для камеры
-                myCameras[id] = new CameraHelper(mCameraManager,cameraID);
-                // устанавливаем текстуру для отображения
-
-                // выводим инормацию по камере
-                myCameras[id].viewFormatSize(ImageFormat.JPEG);
-                myCameras[CAMERA1].openCamera(this);
-                myCameras[id].setTextureView(mImageView);
-            }
+        File outputDir = getCacheDir(); // context being the Activity pointer
+        File outputFile = null;
+        try {
+            outputFile = File.createTempFile("prefix", ".jpg", outputDir);
         }
-        catch(CameraAccessException e){
-            Log.e("TAG", e.getMessage());
+        catch (IOException e) {
             e.printStackTrace();
         }
+
+        findViewById(R.id.takePhoto).setOnClickListener(view -> mRxCameraController21.takePhoto());
+        findViewById(R.id.switchCamera).setOnClickListener(view -> mRxCameraController21.switchCamera());
+
+        mRxCameraController21 = new CameraController(
+                this,
+                mRxCamerController21Callback,
+                outputFile.getAbsolutePath(),
+                (AutoFitTextureView) findViewById(R.id.textureView),
+                Configuration.ORIENTATION_PORTRAIT);
+        mRxCameraController21.getLifecycle().onCreate(savedInstanceState);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mRxCameraController21.getLifecycle().onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRxCameraController21.getLifecycle().onResume();
+    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        mRxCameraController21.getLifecycle().onPause();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        mRxCameraController21.getLifecycle().onStop();
+//    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mRxCameraController21.getLifecycle().onSaveInstanceState(outState);
+    }
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mRxCameraController21.getLifecycle().onDestroy();
+//    }
+
+    private final CameraController.Callback mRxCamerController21Callback = new CameraController.Callback() {
+        @Override
+        public void onFocusStarted() {
+//            mFocusIndicator.setVisibility(View.VISIBLE);
+//            mFocusIndicator.setScaleX(1f);
+//            mFocusIndicator.setScaleY(1f);
+//            mFocusIndicator.animate()
+//                    .scaleX(2f)
+//                    .scaleY(2f)
+//                    .setDuration(500)
+//                    .start();
+        }
+
+        @Override
+        public void onFocusFinished() {
+//            mFocusIndicator.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onPhotoTaken(@NonNull String photoUrl, @NonNull Integer photoSourceType) {
+            Intent intent = ShowPhotoActivity.IntentHelper.createIntent(PictureViewerActivity.this, photoUrl);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onCameraAccessException() {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+
+        @Override
+        public void onCameraOpenException(@Nullable OpenCameraException.Reason reason) {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+
+        @Override
+        public void onException(Throwable throwable) {
+            throwable.printStackTrace();
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+    };
 }

@@ -1,10 +1,14 @@
 package com.diwixis.bestsimpleproject.picturesProject;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.diwixis.bestsimpleproject.R;
@@ -20,6 +24,7 @@ public class PicturesActivity extends MvpAppCompatActivity{
 
 //    @BindView(R.id.storageButton)    ImageButton storageButton;
 //    @BindView(R.id.cameraButton)     ImageButton cameraButton;
+    int PERMISSION_REQUEST_CODE = 1929;
 
     public static void startActivity(Activity activity){
         Intent intent = new Intent(activity, PicturesActivity.class);
@@ -36,6 +41,26 @@ public class PicturesActivity extends MvpAppCompatActivity{
 
     @OnClick(R.id.cameraConstraint)
     void onClickCameraButton(){
-        PictureViewerActivity.startActivity(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            PictureViewerActivity.startActivity(this);
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                PictureViewerActivity.startActivity(this);
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

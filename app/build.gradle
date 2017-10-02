@@ -66,10 +66,13 @@ dependencies {
     compile "com.arello-mobile:moxy:$moxyVersion"
     compile "com.arello-mobile:moxy-app-compat:$moxyVersion"
     annotationProcessor "com.arello-mobile:moxy-compiler:$moxyVersion"
+    //image
+    compile 'com.squareup.picasso:picasso:2.5.2'
     //base
     compile "com.jakewharton:butterknife:8.8.0"
     compile "com.jakewharton:butterknife-compiler:8.8.0"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
