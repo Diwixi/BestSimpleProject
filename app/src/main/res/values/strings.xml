@@ -5,4 +5,6 @@
     <string name="done">DONE</string>
     <string name="revert">REVERT</string>
     <string name="add_image">add image</string>
+    <string name="from_storage">from storage</string>
+    <string name="from_camera">from camera</string>
 </resources>
