@@ -52,6 +52,19 @@ public class PicturesActivity extends MvpAppCompatActivity{
         }
     }
 
+    @OnClick(R.id.storageConstraint)
+    void onClickStorageButton(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//            PictureViewerActivity.startActivity(this);
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 

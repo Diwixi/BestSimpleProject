@@ -1,4 +1,4 @@
-package com.diwixis.bestsimpleproject.picturesProject;
+package com.diwixis.bestsimpleproject.picturesProject.image;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,32 +8,38 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.diwixis.bestsimpleproject.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.bluemobi.dylan.photoview.library.PhotoView;
+
 /**
  * Created by Diwixis on 02.10.2017.
  */
 
-public class ShowPhotoActivity extends AppCompatActivity {
+public class ShowPhotoActivity extends MvpAppCompatActivity {
 
-    private ImageView mPhotoView;
+    @BindView(R.id.photo)   PhotoView photo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_photo_activity);
-        mPhotoView = (ImageView) findViewById(R.id.showPhotoActivity_photo);
+        ButterKnife.bind(this);
         String photoUrl = IntentHelper.getPhotoUrl(getIntent());
         Picasso.with(this)
                 .load(new File(photoUrl))
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.mipmap.back_icon)
                 .error(R.mipmap.error_icon)
-                .into(mPhotoView);
+                .into(photo);
     }
 
     public static class IntentHelper {

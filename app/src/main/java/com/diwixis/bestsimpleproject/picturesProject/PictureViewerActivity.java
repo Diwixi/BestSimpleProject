@@ -1,25 +1,20 @@
 package com.diwixis.bestsimpleproject.picturesProject;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.diwixis.bestsimpleproject.R;
 import com.diwixis.bestsimpleproject.picturesProject.camera.*;
 import com.diwixis.bestsimpleproject.picturesProject.camera.AutoFitTextureView;
+import com.diwixis.bestsimpleproject.picturesProject.image.ShowPhotoActivity;
 
 import java.io.File;
 import java.io.IOException;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Diwixis on 29.08.2017.
@@ -75,18 +70,18 @@ public class PictureViewerActivity extends MvpAppCompatActivity {
         super.onResume();
         mRxCameraController21.getLifecycle().onResume();
     }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        mRxCameraController21.getLifecycle().onPause();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        mRxCameraController21.getLifecycle().onStop();
-//    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRxCameraController21.getLifecycle().onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRxCameraController21.getLifecycle().onStop();
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -94,11 +89,11 @@ public class PictureViewerActivity extends MvpAppCompatActivity {
         mRxCameraController21.getLifecycle().onSaveInstanceState(outState);
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        mRxCameraController21.getLifecycle().onDestroy();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRxCameraController21.getLifecycle().onDestroy();
+    }
 
     private final CameraController.Callback mRxCamerController21Callback = new CameraController.Callback() {
         @Override

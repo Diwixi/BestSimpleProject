@@ -82,9 +82,9 @@ public class CameraRxWrapper {
                 @Override
                 public void onError(@NonNull CameraDevice camera, int error) {
                     Log.d(TAG, "\topenCamera - onError");
-                    if (!observableEmitter.isDisposed()) {
-                        observableEmitter.onError(new OpenCameraException(OpenCameraException.Reason.getReason(error)));
-                    }
+//                    if (!observableEmitter.isDisposed()) {
+//                        observableEmitter.onError(new OpenCameraException(OpenCameraException.Reason.getReason(error)));
+//                    }
                 }
             }, null);
         });
