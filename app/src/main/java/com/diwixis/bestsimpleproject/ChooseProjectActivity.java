@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
 import com.diwixis.bestsimpleproject.listProject.presentations.todoList.ListActivity;
+import com.diwixis.bestsimpleproject.picturesProject.PicturesActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,21 +26,9 @@ public class ChooseProjectActivity extends AppCompatActivity implements ViewSwit
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     int position = 0;
-    private int[] images = { R.drawable.list_image, R.drawable.movie_image, R.drawable.map_image};
+    private int[] images = { R.drawable.list_image, R.drawable.photo_image, R.drawable.movie_image, R.drawable.map_image};
 
     @BindView(R.id.projectImageSwitcher)    ImageSwitcher imageSwitcher;
-
-    View.OnClickListener openProjectListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (position){
-                case 0:{
-                    onListProjectClick();
-                    break;
-                }
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +128,7 @@ public class ChooseProjectActivity extends AppCompatActivity implements ViewSwit
 
     public void setPositionNext() {
         position++;
-        if (position > 2) {
+        if (position > 3) {
             position = 0;
         }
     }
@@ -147,7 +136,7 @@ public class ChooseProjectActivity extends AppCompatActivity implements ViewSwit
     public void setPositionPrev() {
         position--;
         if (position < 0) {
-            position = 2;
+            position = 3;
         }
     }
 
@@ -158,11 +147,19 @@ public class ChooseProjectActivity extends AppCompatActivity implements ViewSwit
                 onListProjectClick();
                 break;
             }
+            case 1:{
+                onPicturiesProjectClick();
+                break;
+            }
         }
     }
 
     public void onListProjectClick() {
         ListActivity.startActivity(this);
+    }
+
+    public void onPicturiesProjectClick(){
+        PicturesActivity.startActivity(this);
     }
 
     public void onMovieProjectClick() {
